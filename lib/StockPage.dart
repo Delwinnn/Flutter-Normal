@@ -1,0 +1,104 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:program/addstockpage.dart';
+import 'package:program/component/cardstock.dart';
+import 'package:program/component/data.dart';
+import 'package:provider/provider.dart';
+
+class StockView extends StatefulWidget {
+  const StockView({super.key});
+
+  @override
+  State<StockView> createState() => _StockViewState();
+}
+
+class _StockViewState extends State<StockView> {
+  TextEditingController search = TextEditingController();
+  List datastock = [];
+  List filtered = [];
+
+  @override
+  void initState() {
+    super.initState();
+    datastock = Provider.of<ProviderGudang>(context,listen: false).Gudang.product;
+    filtered = datastock;
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        title: Text("Stock", style: TextStyle(color: Colors.white),),
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.all(10),
+        color: Colors.grey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(5),
+                child: TextField(
+                  controller: search,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value!=""){
+                        filtered=[];
+                        for (int i = 0;i < datastock.length; i++) {
+                          if (datastock[i][1].toLowerCase().contains(value.toLowerCase()) || datastock[i][2].toLowerCase().contains(value.toLowerCase())) {
+                            filtered.add(datastock[i]);
+                          }
+                        }
+                      }
+                      else{
+                        filtered = datastock;
+                      }
+                    });
+                  },
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: "Search",
+                  ),
+                ),
+              ),
+              ...filtered.map<Widget>((item) {
+                return CardStock(produk: item);
+              }),
+            ]
+          ),
+        )
+      ),
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => AddStock(),)
+            ).then((value) {
+              setState(() {});
+            });
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          elevation: 7,
+          padding: EdgeInsets.all(18),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.add,size: 28,),
+            Text(" Add",style: TextStyle(fontSize: 20),)
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+}
