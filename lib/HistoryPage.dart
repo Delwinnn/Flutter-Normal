@@ -14,13 +14,13 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   List historys = [];
   int _selectedIndex = 0;
-  int found = 0;
 
   @override
   Widget build(BuildContext context) {
     List sales = Provider.of<ProviderGudang>(context).Gudang.sales;
     List purchase = Provider.of<ProviderGudang>(context).Gudang.purchase;
     List historys = _selectedIndex==0 ? purchase : sales;
+    int found = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text('History Page'),
@@ -35,7 +35,11 @@ class _HistoryPageState extends State<HistoryPage> {
           padding: EdgeInsets.all(10),
           child: Column(
             children: [
-              Text("${_selectedIndex==0 ? "Purchase" : "Sales"} History",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
+              Text("${_selectedIndex==0 ? "Purchase" : "Sales"} History",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+              Divider(
+                color: Colors.black, 
+                height: 16, 
+              ),
               ...historys.map((e) {
                 for (int i = 0 ; i<e[4].length ; i++) {
                   if(e[4][i].contains("${widget.name}")) {
@@ -93,7 +97,12 @@ class _HistoryPageState extends State<HistoryPage> {
                 return SizedBox();
               }),
               if (found==0)
-              Text("No History for this item") 
+              Column(
+                children:[
+                  SizedBox(height: 30,),
+                  Text("No History for this Product.",style: TextStyle(fontSize: 20),) 
+                ]
+              ) 
             ],
           )
         ),

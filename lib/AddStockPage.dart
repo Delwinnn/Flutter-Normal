@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:program/component/data.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,8 @@ class _AddStockState extends State<AddStock> {
   TextEditingController link = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController brand = TextEditingController();
+  TextEditingController stock = TextEditingController();
+  int? valstock = 1;
   List<dynamic> newList(List<dynamic> inputList) {
     List hasil = [];
     inputList.forEach((subList) {
@@ -104,6 +107,54 @@ class _AddStockState extends State<AddStock> {
                   hintStyle: TextStyle(fontSize: 16)
                 ),
               ),
+              SizedBox(height: 15,),
+              Text("Stock : ",style: TextStyle(fontSize: 18),),
+              RadioListTile(
+                contentPadding: EdgeInsets.symmetric(vertical: 3),
+                value: 1, 
+                groupValue: valstock, 
+                onChanged: (value) {
+                  setState(() {
+                    valstock = value;
+                  });
+                },
+                title: Text("New Stock"),
+                subtitle: Text("Default Stock : 0"),
+              ),
+              RadioListTile(
+                contentPadding: EdgeInsets.symmetric(vertical: 3),
+                value: 2, 
+                groupValue: valstock, 
+                onChanged: (value) {
+                  setState(() {
+                    valstock = value;
+                  });
+                },
+                title: Text("Old Stock"),
+                subtitle: Text("You can change the default stock"),
+              ),
+              if (valstock == 2 ) 
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: TextField(
+                    controller: stock,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(15)
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.circular(15)
+                      ),
+                      labelText: "Stock",
+                    ),
+                  ),
+                ),
               SizedBox(height: 20,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +162,7 @@ class _AddStockState extends State<AddStock> {
                   ElevatedButton.icon(
                     onPressed: () {
                       setState(() {
-                        if (link.text == "" || name.text == "" || brand.text == "") {
+                        if (link.text == "" || name.text == "" || brand.text == "" || (valstock == 2 && stock.text == "")) {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -150,7 +201,7 @@ class _AddStockState extends State<AddStock> {
                           );
                         }
                         else{
-                          List item = [link.text, name.text, brand.text, 0];
+                          List item = [link.text, name.text, brand.text, valstock==2 ? int.parse(stock.text) : 0];
                           Provider.of<ProviderGudang>(context,listen: false).addStock(item);
                           Navigator.of(context).pop(true);
                         }
