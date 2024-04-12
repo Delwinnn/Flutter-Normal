@@ -11,6 +11,7 @@ class AddTransaction extends StatefulWidget {
   final String type;
   const AddTransaction({super.key, required this.type});
 
+
   @override
   State<AddTransaction> createState() => _AddTransactionState();
 }
@@ -111,7 +112,7 @@ class _AddTransactionState extends State<AddTransaction> {
               SizedBox(height: 5,),
               if (ordered.length>0)
                 ...ordered.map((e) {
-                  return ListItem(data: e);
+                  return ListItem(data: e,isFitur: true,);
                 }).toList()
               else
                 Text("Order Empty"),
@@ -126,13 +127,18 @@ class _AddTransactionState extends State<AddTransaction> {
                     menuHeight: 200,
                     hintText: "Select Product",
                     dropdownMenuEntries: semuaItem.map((e) {
-                      return DropdownMenuEntry(value: e, label: e[1]);
+                      return DropdownMenuEntry(
+                        value: e, label: e[1],
+                      );
                     }).toList(),
                     enableSearch: true,
                     requestFocusOnTap: true,
                     enableFilter: true,
                     onSelected: (value) {
                       product=value;
+                      setState(() {
+                        isFound = true;
+                      });
                     },
                   ),
                   SizedBox(height: 15,),
@@ -222,6 +228,16 @@ class _AddTransactionState extends State<AddTransaction> {
                               },
                             );
                           }
+                          else if (!product.contains(item.text)) {
+                            setState(() {
+                              isFound = false;
+                            });
+                          }
+                          else if (product.isEmpty) {
+                            setState(() {
+                              isFound = false;
+                            });
+                          }
                           else{
                             List <dynamic> x = [product[0].toString(),product[1].toString(),int.parse(price.text),int.parse(qty.text)];
                             ordered.add(x);
@@ -233,6 +249,7 @@ class _AddTransactionState extends State<AddTransaction> {
                             item.text = "";
                             price.text = "";
                             qty.text = "";
+                            product = [];
                           }
                         });
                       }, 

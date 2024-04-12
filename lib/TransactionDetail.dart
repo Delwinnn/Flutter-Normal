@@ -59,7 +59,7 @@ class PurchaseDetail extends StatelessWidget {
             Text("List Item", style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
             SizedBox(height: 10,),
             Column(
-              children: brg.map((e) => ListItem(data: e)).toList(),
+              children: brg.map((e) => ListItem(data: e, isFitur: false,)).toList(),
             ),
             Container(
               padding: EdgeInsets.all(10),
@@ -94,7 +94,8 @@ class PurchaseDetail extends StatelessWidget {
 
 class ListItem extends StatelessWidget {
   final List data;
-  const ListItem({super.key, required this.data});
+  final bool isFitur;
+  const ListItem({super.key, required this.data, required this.isFitur});
 
   @override
   Widget build(BuildContext context) {
@@ -110,64 +111,97 @@ class ListItem extends StatelessWidget {
           )
         ]
       ),
-      child: Row( 
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          Container(
-            width: 100,
-            height: 100,
-            margin: EdgeInsets.only(right: 12),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Image(
-            image: NetworkImage("${data[0]}"),
-            height: MediaQuery.of(context).size.height/8,
-            width: 100,
-          ),
-          ),
-          Expanded(
-            child: Container(
+          Row( 
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 100,
               height: 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("${data[1]}",
-                    style: TextStyle(fontSize: 16), maxLines: 2,overflow: TextOverflow.ellipsis,
+              margin: EdgeInsets.only(right: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Image(
+              image: NetworkImage("${data[0]}"),
+              height: MediaQuery.of(context).size.height/8,
+              width: 100,
+            ),
+            ),
+            Expanded(
+              child: Container(
+                height: 100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${data[1]}",
+                      style: TextStyle(fontSize: 16), maxLines: 2,overflow: TextOverflow.ellipsis,
+                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          NumberFormat.currency(
+                            locale: 'id_ID',
+                            symbol: 'Rp. ',
+                            decimalDigits: 0,
+                          ).format(data[2]),
+                          style: TextStyle(fontSize: 15)),
+                        Text("${data[3]}x")
+                      ],
                     ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        NumberFormat.currency(
-                          locale: 'id_ID',
-                          symbol: 'Rp. ',
-                          decimalDigits: 0,
-                        ).format(data[2]),
-                        style: TextStyle(fontSize: 15)),
-                      Text("${data[3]}x")
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        NumberFormat.currency(
-                          locale: 'id_ID',
-                          symbol: 'Rp. ',
-                          decimalDigits: 2,
-                        ).format(data[2]*data[3]),
-                        style: TextStyle(fontSize: 15))
-                    ],
-                  )
-                ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          NumberFormat.currency(
+                            locale: 'id_ID',
+                            symbol: 'Rp. ',
+                            decimalDigits: 2,
+                          ).format(data[2]*data[3]),
+                          style: TextStyle(fontSize: 15))
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+        SizedBox(height: 10,),
+        if (isFitur)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton.icon(
+              onPressed: () {
+                
+              }, 
+              icon: Icon(Icons.edit,), 
+              label: Text("Edit"),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+              ),
+            ),
+            SizedBox(width: 15,),
+            ElevatedButton.icon(
+              onPressed: () {
+                
+              }, 
+              icon: Icon(Icons.delete,), 
+              label: Text("Delete"),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+              ),
+            ),
+          ],
+        )
+      ]),
     );
   }
 }
