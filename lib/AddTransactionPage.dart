@@ -24,6 +24,8 @@ class _AddTransactionState extends State<AddTransaction> {
   List <dynamic> ordered = [];
   int total = 0;
   bool isFound = true;
+  bool isEdit = false;
+  int index = -1;
   String jenis = "";
   List product = [];
   DateTime date = DateTime.now();
@@ -112,7 +114,66 @@ class _AddTransactionState extends State<AddTransaction> {
               SizedBox(height: 5,),
               if (ordered.length>0)
                 ...ordered.map((e) {
-                  return ListItem(data: e,isFitur: true,);
+                  return Container( 
+                    margin: EdgeInsets.only(bottom: 15),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey,),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(1, 1)
+                        )
+                      ]
+                    ),
+                    child: Column(
+                      children: [
+                        ListItem(data: e),
+                        Divider(
+                          height: 10,
+                          thickness: 1,
+                          color: Colors.black,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                setState(() {
+                                  item.text = e[1];
+                                  product=e;
+                                  price.text = "${e[2]}";
+                                  qty.text = "${e[3]}";
+                                  isEdit = true;
+                                  index = ordered.indexOf(e);
+                                });
+                              }, 
+                              icon: Icon(Icons.edit,), 
+                              label: Text("Edit"),
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.blue,
+                              ),
+                            ),
+                            SizedBox(width: 15,),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                setState(() {
+                                  ordered.remove(e);
+                                });
+                              }, 
+                              icon: Icon(Icons.delete,), 
+                              label: Text("Delete"),
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.red,
+                              ),
+                            ),
+                          ],
+                        )
+                      ]
+                    ),
+                  );
                 }).toList()
               else
                 Text("Order Empty"),
@@ -199,62 +260,121 @@ class _AddTransactionState extends State<AddTransaction> {
                   Container(
                     height: 45,
                     width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[500],
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                        )
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          if (price.text=="" || qty.text=="" || item.text=="") {
-                            showDialog(
-                              context: context, 
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Alert'),
-                                  content: Text("Data is Incomplete"),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('OK'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                          else if (!product.contains(item.text)) {
-                            setState(() {
-                              isFound = false;
-                            });
-                          }
-                          else if (product.isEmpty) {
-                            setState(() {
-                              isFound = false;
-                            });
-                          }
-                          else{
-                            List <dynamic> x = [product[0].toString(),product[1].toString(),int.parse(price.text),int.parse(qty.text)];
-                            ordered.add(x);
-                            total = 0;
-                            for (int x = 0 ; x<ordered.length ; x++ ) {
-                              int jumlah = ordered[x][2]*ordered[x][3];
-                              total+=jumlah;
+                    child: isEdit
+                      ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          )
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            print(product);
+                            if (price.text=="" || qty.text=="" || item.text=="") {
+                              showDialog(
+                                context: context, 
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Alert'),
+                                    content: Text("Data is Incomplete"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             }
-                            item.text = "";
-                            price.text = "";
-                            qty.text = "";
-                            product = [];
-                          }
-                        });
-                      }, 
-                      child: Text("Add",style: TextStyle(color: Colors.white),)
-                    ),
+                            else if (!product.contains(item.text)) {
+                              setState(() {
+                                isFound = false;
+                              });
+                            }
+                            else if (product.isEmpty) {
+                              setState(() {
+                                isFound = false;
+                              });
+                            }
+                            else{
+                              List <dynamic> x = [product[0].toString(),product[1].toString(),int.parse(price.text),int.parse(qty.text)];
+                              ordered[index] = x;
+                              total = 0;
+                              for (int x = 0 ; x<ordered.length ; x++ ) {
+                                int jumlah = ordered[x][2]*ordered[x][3];
+                                total+=jumlah;
+                              }
+                              item.text = "";
+                              price.text = "";
+                              qty.text = "";
+                              product = [];
+                              isEdit = false;
+                            }
+                          });
+                        }, 
+                        child: Text("Edit",style: TextStyle(color: Colors.white),)
+                      )
+                        : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[500],
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          )
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if (price.text=="" || qty.text=="" || item.text=="") {
+                              showDialog(
+                                context: context, 
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Alert'),
+                                    content: Text("Data is Incomplete"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                            else if (!product.contains(item.text)) {
+                              setState(() {
+                                isFound = false;
+                              });
+                            }
+                            else if (product.isEmpty) {
+                              setState(() {
+                                isFound = false;
+                              });
+                            }
+                            else{
+                              List <dynamic> x = [product[0].toString(),product[1].toString(),int.parse(price.text),int.parse(qty.text)];
+                              ordered.add(x);
+                              total = 0;
+                              for (int x = 0 ; x<ordered.length ; x++ ) {
+                                int jumlah = ordered[x][2]*ordered[x][3];
+                                total+=jumlah;
+                              }
+                              item.text = "";
+                              price.text = "";
+                              qty.text = "";
+                              product = [];
+                            }
+                          });
+                        }, 
+                        child: Text("Add",style: TextStyle(color: Colors.white),)
+                      ),
                   ),
                   SizedBox(height: 15,),
                   Container(
@@ -411,3 +531,5 @@ class _AddTransactionState extends State<AddTransaction> {
     );
   }
 }
+
+
