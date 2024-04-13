@@ -145,6 +145,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                       isPass = true;
                       data.user[0].add(user.text.toUpperCase());
                       data.user[1].add(pass.text);
+                      data.user[2].add("https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg");
                       user.text = "";
                       pass.text = "";
                       kunci.text = "";

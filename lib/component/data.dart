@@ -31,7 +31,12 @@ class ProviderGudang extends ChangeNotifier{
     key: "Hello", 
     user: [
       ["MAIN","K1","K2"],
-      ["+62","123","456"]
+      ["+62","123","456"],
+       [
+        "https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg",
+        "https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg",
+        "https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg"
+      ]
     ], 
     product: [
       ["https://down-id.img.susercontent.com/file/id-11134207-7r992-lsct022cl52179","EKL Hanger Baju Merah","EKL",230],
@@ -76,6 +81,56 @@ class ProviderGudang extends ChangeNotifier{
       15000000],
     ],
   );
+
+  
+  String? currentUser;
+
+  void setCurrentUser(String user) {
+    currentUser = user;
+    notifyListeners();
+  }
+
+ String? getCurrentUser() {
+  return currentUser?.isNotEmpty ?? false ? currentUser : null;
+}
+
+void updateUsername(String oldUsername, String newUsername) {
+  int userIndex = Gudang.user[0].indexOf(oldUsername);
+  
+  if (userIndex != -1) {
+    Gudang.user[0][userIndex] = newUsername;
+    Gudang.usinguser = newUsername;
+    notifyListeners();
+  } else {
+    print('User not found or index out of range!');
+  }
+}
+
+
+void updatePassword(String username, String oldPassword, String newPassword) {
+  // Find the index of the user in the user list
+  int userIndex = Gudang.user[0].indexOf(username);
+  if (userIndex != -1) {
+    // Check if the old password matches
+    if (Gudang.user[1][userIndex] == oldPassword) {
+      // Update the password at the found index
+      Gudang.user[1][userIndex] = newPassword;
+      notifyListeners();
+    } else {
+      // Handle case where old password doesn't match
+      print('Old password is incorrect!');
+    }
+  } else {
+    // Handle case where user is not found
+    print('User not found!');
+  }
+}
+
+
+  void updateUserImage(int userIndex, String newImageUrl) {
+    Gudang.user[2][userIndex] = newImageUrl;
+    notifyListeners();
+  }
 
   void addStock(List x) {
     Gudang.product.add(x);

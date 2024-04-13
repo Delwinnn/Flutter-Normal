@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:program/component/data.dart';
-import 'package:program/HomePage.dart';
+import 'package:program/homepage.dart';
 import 'package:program/registerpage.dart';
 import 'package:provider/provider.dart';
 
@@ -84,38 +84,38 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
               SizedBox(height: 30),
-              ElevatedButton(onPressed: (){
-                setState(() {
-                  int index = account[0].indexOf(user.text.toUpperCase());
-                  if (index != -1) {
-                    if (account[1][index] == pass.text){
-                      isCocok = true;
-                      Provider.of<ProviderGudang>(context, listen: false).Gudang.usinguser = user.text.toUpperCase();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomeView(data: Provider.of<ProviderGudang>(context).Gudang, fitur: listfitur, user: user.text.toUpperCase()))
-                      );
-                    }
-                    else{
-                      isCocok = false;
-                    }
-                  }
-                  else{
-                    isCocok = false;
-                  }
-                });
-              }, 
-                child: Text("Log In", style: TextStyle(fontSize: 15),),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black,
-                  elevation: 7,
-                  fixedSize: Size.fromWidth(150),
-                  padding:EdgeInsets.all(20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)
-                  )
-                ),
-              ),
+              ElevatedButton(
+  onPressed: () {
+    setState(() {
+      int index = account[0].indexOf(user.text.toUpperCase());
+      if (index != -1) {
+        if (account[1][index] == pass.text) {
+          // Set the currentUser in ProviderGudang
+          Provider.of<ProviderGudang>(context, listen: false).Gudang.usinguser = account[0][index];
+          // Navigate to HomeView
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => HomeView(data: Provider.of<ProviderGudang>(context).Gudang, fitur: listfitur, user: Provider.of<ProviderGudang>(context).Gudang.usinguser))
+          );
+        } else {
+          isCocok = false;
+        }
+      } else {
+        isCocok = false;
+      }
+    });
+  }, 
+  child: Text("Log In", style: TextStyle(fontSize: 15),),
+  style: ElevatedButton.styleFrom(
+    foregroundColor: Colors.white,
+    backgroundColor: Colors.black,
+    elevation: 7,
+    fixedSize: Size.fromWidth(150),
+    padding:EdgeInsets.all(20),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30)
+    )
+  ),
+),
               SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
