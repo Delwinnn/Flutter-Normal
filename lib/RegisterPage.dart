@@ -16,6 +16,8 @@ class _RegistrationViewState extends State<RegistrationView> {
   bool isKey = true;
   bool isPass = true;
   bool isSame = false;
+  bool isPassMax = false;
+  bool isUserMax = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +58,19 @@ class _RegistrationViewState extends State<RegistrationView> {
                     fillColor: Colors.white,
                     filled: true,
                     labelText: "Username",
-                    errorText: isSame ? "Username Registered" : null,
+                    errorText: isUserMax ? "Username Max 10 Characters" : (isSame ? "Username Registered" : null),
                     labelStyle: TextStyle(color: Colors.grey[700]),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.length>10) {
+                        isUserMax = true;
+                      }
+                      else{
+                        isUserMax = false;
+                      }
+                    });
+                  },
                 ),
               ),
               SizedBox(height: 20),
@@ -68,6 +80,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                   obscureText: true,
                   controller: pass,
                   decoration: InputDecoration(
+                    errorText: isPassMax ? "Password Max 10 Characters" : null,
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(15)
@@ -81,6 +94,16 @@ class _RegistrationViewState extends State<RegistrationView> {
                     labelText: "Password",
                     labelStyle: TextStyle(color: Colors.grey[700]),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.length>10) {
+                        isPassMax = true;
+                      }
+                      else{
+                        isPassMax = false;
+                      }
+                    });
+                  },
                 ),
               ),
               SizedBox(height: 20),
@@ -104,6 +127,16 @@ class _RegistrationViewState extends State<RegistrationView> {
                     errorText: isPass ? null : "Unmatched Password",
                     labelStyle: TextStyle(color: Colors.grey[700]),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value!=pass.text) {
+                        isPass = false;
+                      }
+                      else{
+                        isPass = true;
+                      }
+                    });
+                  },
                 ),
               ),
               SizedBox(height: 20),
@@ -127,18 +160,21 @@ class _RegistrationViewState extends State<RegistrationView> {
                     errorText: isKey ? null : "Invalid Key",
                     labelStyle: TextStyle(color: Colors.grey[700]),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      
+                    });
+                  },
                 ),
               ),
               SizedBox(height: 30),
-              ElevatedButton(onPressed: (){
-                if (kunci.text == data.key){
+              ElevatedButton(
+                onPressed: (!isUserMax && !isPassMax && isPass) && (user.text.trim() != "" && pass.text != "" && confirm.text != "" && kunci.text != "") ? () {
+                  if (kunci.text == data.key){
                   setState(() {
                     if (data.user[0].contains(user.text.toUpperCase())){
                       isSame = true;
                       isKey = true;
-                    }
-                    else if (pass.text != confirm.text) {
-                      isPass = false;
                     }
                     else{
                       isKey = true;
@@ -146,10 +182,11 @@ class _RegistrationViewState extends State<RegistrationView> {
                       data.user[0].add(user.text.toUpperCase());
                       data.user[1].add(pass.text);
                       data.user[2].add("https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg");
-                      user.text = "";
-                      pass.text = "";
-                      kunci.text = "";
-                      confirm.text="";
+                      user.clear();
+                      pass.clear();
+                      kunci.clear();
+                      confirm.clear();
+                      Navigator.of(context).pop();
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -173,13 +210,13 @@ class _RegistrationViewState extends State<RegistrationView> {
                 else{
                   setState(() {
                     isKey = false;
-                    user.text = "";
-                    pass.text = "";
-                    kunci.text = "";
-                    confirm.text = "";
+                    user.clear();
+                    pass.clear();
+                    kunci.clear();
+                    confirm.clear();
                   });
                 }
-              }, 
+                } : null,
                 child: Text("Register", style: TextStyle(fontSize: 15),),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,

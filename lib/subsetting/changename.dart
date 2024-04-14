@@ -43,26 +43,33 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
                   ProviderGudang provider = Provider.of<ProviderGudang>(context, listen: false);
                   String? currentUser = provider.Gudang.usinguser;
                   if (currentUser != "") {
-                    provider.updateUsername(currentUser, newUsername.toUpperCase());
-                    Navigator.pop(context);
-                    // Show success dialog
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Success'),
-                          content: Text('Username updated successfully to $newUsername'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                    if (provider.Gudang.user[0].contains(newUsername.toUpperCase())) {
+                      setState(() {
+                        _errorMessage = "Username has been used";
+                      });
+                    }
+                    else{
+                      provider.updateUsername(currentUser, newUsername.toUpperCase());
+                      Navigator.pop(context);
+                      // Show success dialog
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Success'),
+                            content: Text('Username updated successfully to ${newUsername.toUpperCase()}'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   } else {
                     // Show "No user logged in" dialog
                     showDialog(
