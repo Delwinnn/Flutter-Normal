@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatefulWidget {
+class ChangePicturePage extends StatefulWidget {
   final void Function(String) onUpdateImageUrl;
 
-  const ProfilePage({Key? key, required this.onUpdateImageUrl}) : super(key: key);
+  const ChangePicturePage({Key? key, required this.onUpdateImageUrl}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ChangePicturePageState createState() => _ChangePicturePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ChangePicturePageState extends State<ChangePicturePage> {
   TextEditingController _textFieldController = TextEditingController();
   String? _errorMessage;
 

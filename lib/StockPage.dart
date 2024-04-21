@@ -79,9 +79,7 @@ class _StockViewState extends State<StockView> {
           setState(() {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => AddStock(),)
-            ).then((value) {
-              setState(() {});
-            });
+            );
           });
         },
         style: ElevatedButton.styleFrom(

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:program/ProfilePage.dart';
 import 'package:provider/provider.dart';
 import 'package:program/aboutpage.dart';
 import 'package:program/accountView.dart';
 import 'package:program/component/data.dart';
-import 'package:program/HistoryPage.dart';
 import 'package:program/loginpage.dart';
 import 'package:program/purchasingpage.dart';
 import 'package:program/salespage.dart';
-import 'package:program/settings.dart';
 import 'package:program/stockpage.dart';
 
 class HomeView extends StatefulWidget {
@@ -17,7 +16,7 @@ class HomeView extends StatefulWidget {
   final dynamic tujuan;
 
   HomeView({Key? key, required this.data, required this.fitur, required this.user})
-      : tujuan = [PurchasingView(), SalesView(), StockView(), AboutView(), Setting()],
+      : tujuan = [PurchasingView(), SalesView(), StockView(), AboutView(), ProfilePage()],
         super(key: key);
 
   @override
@@ -28,6 +27,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final indexUser = Provider.of<ProviderGudang>(context).Gudang.user[0].indexOf(widget.user); 
+
     return Scaffold(
   appBar: AppBar(
   automaticallyImplyLeading: false,
@@ -41,18 +42,18 @@ class _HomeViewState extends State<HomeView> {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Consumer<ProviderGudang>(
-            builder: (context, provider, _) => Setting(),
+            builder: (context, provider, _) => ProfilePage(),
           ),
         ));
       },
       child: Row(
         children: [
-          SizedBox(width: 8), // Add some space between the title and the avatar
+          SizedBox(width: 8), 
           CircleAvatar(
-            radius: 20, // Adjust the radius as needed
+            radius: 20, 
             backgroundImage: NetworkImage(widget.data.user[2][widget.data.user[0].indexOf(widget.user)]),
           ),
-          SizedBox(width: 8), // Add some space after the avatar
+          SizedBox(width: 8),
         ],
       ),
     ),
@@ -105,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
                   );
                 },
               ),
-              if (widget.user == "MAIN")
+              if (indexUser == 0)
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: ElevatedButton(
@@ -132,62 +133,6 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Log Out"),
-                          content: Text("Are you sure you want to Log Out?"),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => LoginView()),
-                                );
-                              },
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              ),
-                              child: Text("Log Out", style: TextStyle(color: Colors.white)),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.logout, size: 25),
-                      SizedBox(width: 10),
-                      Text("Log Out", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.red,
-                    elevation: 10,
-                    fixedSize: Size.fromWidth(MediaQuery.of(context).size.width),
-                    padding: EdgeInsets.all(20),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

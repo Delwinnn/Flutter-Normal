@@ -75,9 +75,7 @@ class _PurchasingViewState extends State<PurchasingView> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => AddTransaction(type: "",),)
-          ).then((value) {
-            setState(() {});
-          });
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue,

@@ -76,9 +76,7 @@ class _SalesViewState extends State<SalesView> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => AddTransaction(type: "Sales",),)
-          ).then((value) {
-            setState(() {});
-          },);
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue,
