@@ -28,18 +28,21 @@ class _AccountViewState extends State<AccountView> {
         backgroundColor: Colors.blue, 
       ),
       body:Container(
+        height: MediaQuery.of(context).size.height,
         color: Colors.grey[400],
         padding: EdgeInsets.only(left: 15,right: 15,top: 7,bottom: 7),
-        child: Column(
-          children: [
-            SizedBox(height: 20,),
-            Text("Account List",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-            SizedBox(height: 20,),
-            Column(
-              children: 
-                user.mapIndexed((index, e) => CardAccount(acc: user[index], pwd: pass[index], pics: picture[index],)).toList()
-            ),
-        ]),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 20,),
+              Text("Account List",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+              SizedBox(height: 20,),
+              Column(
+                children: 
+                  user.mapIndexed((index, e) => CardAccount(acc: user[index], pwd: pass[index], pics: picture[index],)).toList()
+              ),
+          ]),
+        ),
       ),
     );
   }
@@ -73,7 +76,7 @@ class _CardAccountState extends State<CardAccount> {
           Row(
             children:[ 
               CircleAvatar(
-                radius: 40,
+                radius: 30,
                 backgroundImage: NetworkImage("${widget.pics}"), 
               ),
               SizedBox(width: 15,),

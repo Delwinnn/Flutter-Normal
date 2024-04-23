@@ -61,6 +61,7 @@ class _StockViewState extends State<StockView> {
                     });
                   },
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search,color: Colors.black),
                     fillColor: Colors.white,
                     filled: true,
                     hintText: "Search",
@@ -92,7 +93,6 @@ class _StockViewState extends State<StockView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.add,size: 28,),
-            Text(" Add",style: TextStyle(fontSize: 20),)
           ],
         ),
       ),

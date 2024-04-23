@@ -59,6 +59,7 @@ class _SalesViewState extends State<SalesView> {
                     });
                   },
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search,color: Colors.black),
                     fillColor: Colors.white,
                     filled: true,
                     hintText: "Search",

@@ -18,6 +18,7 @@ class _RegistrationViewState extends State<RegistrationView> {
   bool isSame = false;
   bool isPassMax = false;
   bool isUserMax = false;
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +48,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                 child: TextField(
                   controller: user,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.person),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(15)
@@ -77,9 +79,18 @@ class _RegistrationViewState extends State<RegistrationView> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 child: TextField(
-                  obscureText: true,
+                  obscureText: !isVisible,
                   controller: pass,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      }, 
+                      icon: isVisible ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+                    ),
                     errorText: isPassMax ? "Password Max 10 Characters" : null,
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
@@ -113,6 +124,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                   obscureText: true,
                   controller: confirm,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock_open_outlined),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(15)
@@ -146,6 +158,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                   obscureText: true,
                   controller: kunci,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.key),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(15)
@@ -181,7 +194,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                       isPass = true;
                       data.user[0].add(user.text.toUpperCase());
                       data.user[1].add(pass.text);
-                      data.user[2].add("https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg");
+                      data.user[2].add("https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg");
                       user.clear();
                       pass.clear();
                       kunci.clear();

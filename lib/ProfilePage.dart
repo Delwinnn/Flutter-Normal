@@ -30,138 +30,139 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         body: Container(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                children: [
-                  Container(
-                    color: Colors.green[300],
-                    padding: EdgeInsets.all(20),
-                    width: MediaQuery.of(context).size.width,
-                    height: 230,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Consumer<ProviderGudang>(
-                        builder: (context, provider, _) {
-                          int userIndex = provider.Gudang.user[0].indexOf(currentUser);
-                          if (userIndex != -1) {
-                            return CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage(provider.Gudang.user[2][userIndex]),
-                            );
-                          } else {
-                            return Text("User not found!"); 
-                          }
-                        },
-                      ),
-                      SizedBox(height: 10,),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue, 
-                            foregroundColor: Colors.white,
-                          ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ChangePicturePage(
-                                onUpdateImageUrl: (newImageUrl) {
-                                  provider.updateUserImage(provider.Gudang.user[0].indexOf(currentUser), newImageUrl); 
-                                },
-                              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                      color: Colors.green[300],
+                      padding: EdgeInsets.all(20),
+                      width: MediaQuery.of(context).size.width,
+                      height: 230,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Consumer<ProviderGudang>(
+                          builder: (context, provider, _) {
+                            int userIndex = provider.Gudang.user[0].indexOf(currentUser);
+                            if (userIndex != -1) {
+                              return CircleAvatar(
+                                radius: 50,
+                                backgroundImage: NetworkImage(provider.Gudang.user[2][userIndex]),
+                              );
+                            } else {
+                              return Text("User not found!"); 
+                            }
+                          },
+                        ),
+                        SizedBox(height: 10,),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue, 
+                              foregroundColor: Colors.white,
                             ),
-                          );
-                        },
-                        child: Text("Edit"),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ChangePicturePage(
+                                  onUpdateImageUrl: (newImageUrl) {
+                                    provider.updateUserImage(provider.Gudang.user[0].indexOf(currentUser), newImageUrl); 
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text("Edit"),
+                        ),
+                        ],
                       ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              child: Icon(
+                                Icons.person,
+                                size: 50,
+                              )
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Username", style: TextStyle(fontSize: 15, color: Colors.grey),),
+                                Text("${currentUser}",style: TextStyle(fontSize: 20),)
+                              ],
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          iconSize: 30,
+                          color: Colors.blue,
+                          padding: EdgeInsets.all(10),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ChangeUsernamePage(),
+                              ),
+                            );
+                          }, 
+                          icon: Icon(Icons.edit)
+                        )
                       ],
                     ),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            child: Icon(
-                              Icons.person,
-                              size: 50,
-                            )
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Username", style: TextStyle(fontSize: 15, color: Colors.grey),),
-                              Text("${currentUser}",style: TextStyle(fontSize: 20),)
-                            ],
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        iconSize: 30,
-                        color: Colors.blue,
-                        padding: EdgeInsets.all(10),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ChangeUsernamePage(),
+                    Divider(
+                      color: Colors.grey,
+                      height: 5,
+                      thickness: 1,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              child: Icon(
+                                Icons.lock,
+                                size: 50,
+                              )
                             ),
-                          );
-                        }, 
-                        icon: Icon(Icons.edit)
-                      )
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.grey,
-                    height: 5,
-                    thickness: 1,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            child: Icon(
-                              Icons.lock,
-                              size: 50,
-                            )
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Password", style: TextStyle(fontSize: 15, color: Colors.grey),),
-                              Text("${"*"*pass.length}",style: TextStyle(fontSize: 20),)
-                            ],
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        iconSize: 30,
-                        color: Colors.blue,
-                        padding: EdgeInsets.all(10),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ChangePasswordPage(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Password", style: TextStyle(fontSize: 15, color: Colors.grey),),
+                                Text("${"*"*pass.length}",style: TextStyle(fontSize: 20),)
+                              ],
                             ),
-                          );
-                        }, 
-                        icon: Icon(Icons.edit)
-                      )
-                    ]
-                  ),
-                  Divider(
-                    color: Colors.grey,
-                    height: 5,
-                    thickness: 1,
-                  ),
-                ],
+                          ],
+                        ),
+                        IconButton(
+                          iconSize: 30,
+                          color: Colors.blue,
+                          padding: EdgeInsets.all(10),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ChangePasswordPage(),
+                              ),
+                            );
+                          }, 
+                          icon: Icon(Icons.edit)
+                        )
+                      ]
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                      height: 5,
+                      thickness: 1,
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: EdgeInsets.all(20),

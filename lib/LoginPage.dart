@@ -6,8 +6,6 @@ import 'package:program/registerpage.dart';
 import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
-
   @override
   State<LoginView> createState() => _LoginViewState();
 }
@@ -16,6 +14,7 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController user = TextEditingController();
   TextEditingController pass = TextEditingController();
   bool isCocok = true;
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +44,7 @@ class _LoginViewState extends State<LoginView> {
                 child: TextField(
                   controller: user,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.person,color: Colors.black,),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(15)
@@ -65,8 +65,17 @@ class _LoginViewState extends State<LoginView> {
                 padding: EdgeInsets.symmetric(horizontal: 25),
                 child: TextField(
                   controller: pass,
-                  obscureText: true,
+                  obscureText: !isVisible,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isVisible=!isVisible;
+                        });
+                      },
+                      icon: isVisible ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(15)
@@ -98,9 +107,11 @@ class _LoginViewState extends State<LoginView> {
           );
         } else {
           isCocok = false;
+          pass.clear();
         }
       } else {
         isCocok = false;
+        pass.clear();
       }
     });
   }, 
