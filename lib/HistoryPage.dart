@@ -4,8 +4,8 @@ import 'package:program/component/data.dart';
 import 'package:provider/provider.dart';
 
 class HistoryPage extends StatefulWidget {
-  String name;
-  HistoryPage({super.key,required this.name});
+  final String name;
+  const HistoryPage({super.key,required this.name});
 
   @override
   _HistoryPageState createState() => _HistoryPageState();
