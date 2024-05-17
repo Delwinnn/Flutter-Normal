@@ -65,8 +65,13 @@ class _PurchasingViewState extends State<PurchasingView> {
                   ),
                 ),
               ),
-              ...filtered.reversed.toList().map<Widget>((item) {
-                return CardTrans(x: item);
+              ...
+              search.text == ""
+              ? Provider.of<ProviderGudang>(context).Gudang.purchase.reversed.toList().map<Widget>((item) {
+                return CardTrans(x: item, type:"Purchase");
+              })
+              : filtered.reversed.toList().map<Widget>((item) {
+                return CardTrans(x: item, type:"Purchase");
               }),
             ]
           ),
@@ -79,6 +84,7 @@ class _PurchasingViewState extends State<PurchasingView> {
           );
         },
         style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
           backgroundColor: Colors.blue,
           foregroundColor: Colors.white,
           elevation: 7,

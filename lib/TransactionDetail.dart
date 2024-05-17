@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 
 class PurchaseDetail extends StatelessWidget {
   final List dataTransaksi;
-  const PurchaseDetail({super.key, required this.dataTransaksi});
+  final String type;
+  const PurchaseDetail({super.key, required this.dataTransaksi,  required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +14,8 @@ class PurchaseDetail extends StatelessWidget {
     final int total = brg.fold(0, (previousValue, element) => previousValue + (element[2]*element[3] as int));
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Detail Penjualan',
+        title: Text(type=="Sales"
+          ?'Sales Detail' : "Purchase Detail",
           style: TextStyle(
             fontSize: 24,
             color: Colors.white,
@@ -40,7 +41,7 @@ class PurchaseDetail extends StatelessWidget {
             SizedBox(height: 7),
             Row(
               children: [
-                Text("Supplier : ",style: TextStyle(fontSize: 20),),
+                Text(type=="Sales" ? "Customer : " : "Supplier : ",style: TextStyle(fontSize: 20),),
                 Expanded(
                   child: Text("${dataTransaksi[2]}",style: TextStyle(fontSize: 20),)
                 )
@@ -177,63 +178,3 @@ class ListItem extends StatelessWidget {
     );
   }
 }
-
-
-// Row( 
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Container(
-//               width: 100,
-//               height: 100,
-//               margin: EdgeInsets.only(right: 12),
-//               decoration: BoxDecoration(
-//                 color: Colors.grey[200],
-//                 borderRadius: BorderRadius.circular(10),
-//               ),
-//               child: Image(
-//               image: NetworkImage("${data[0]}"),
-//               height: MediaQuery.of(context).size.height/8,
-//               width: 100,
-//             ),
-//             ),
-//             Expanded(
-//               child: Container(
-//                 height: 100,
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text("${data[1]}",
-//                       style: TextStyle(fontSize: 16), maxLines: 2,overflow: TextOverflow.ellipsis,
-//                       ),
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: [
-//                         Text(
-//                           NumberFormat.currency(
-//                             locale: 'id_ID',
-//                             symbol: 'Rp. ',
-//                             decimalDigits: 0,
-//                           ).format(data[2]),
-//                           style: TextStyle(fontSize: 15)),
-//                         Text("${data[3]}x")
-//                       ],
-//                     ),
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.end,
-//                       children: [
-//                         Text(
-//                           NumberFormat.currency(
-//                             locale: 'id_ID',
-//                             symbol: 'Rp. ',
-//                             decimalDigits: 2,
-//                           ).format(data[2]*data[3]),
-//                           style: TextStyle(fontSize: 15))
-//                       ],
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),

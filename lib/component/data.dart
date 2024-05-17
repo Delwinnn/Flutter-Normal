@@ -82,18 +82,6 @@ class ProviderGudang extends ChangeNotifier{
     ],
   );
 
-  
-  String? currentUser;
-
-  void setCurrentUser(String user) {
-    currentUser = user;
-    notifyListeners();
-  }
-
- String? getCurrentUser() {
-  return currentUser?.isNotEmpty ?? false ? currentUser : null;
-}
-
 void updateUsername(String oldUsername, String newUsername) {
   int userIndex = Gudang.user[0].indexOf(oldUsername);
   
@@ -132,8 +120,50 @@ void updatePassword(String username, String oldPassword, String newPassword) {
     notifyListeners();
   }
 
-  void addStock(List x) {
-    Gudang.product.add(x);
+  void addStock(BuildContext context, List item) {
+    if (item[0] == "" || item[1] == "" || item[2] == "" || (item[3] == 2 && item[4] == "")) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Alert'),
+            content: Text('Data Cannot Empty'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    else if(newList(Gudang.product).contains(item[1])){
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Alert'),
+            content: Text('Product Name already Exist'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    else{
+      List result = [item[0], item[1], item[2], item[3]==2 ? int.parse(item[4]) : 0];
+      Gudang.product.add(result);
+      Navigator.of(context).pop(true);
+    }
     notifyListeners();
   }
 
@@ -143,8 +173,68 @@ void updatePassword(String username, String oldPassword, String newPassword) {
     notifyListeners();
   }
 
-  void addPurchase(List x) {
-    Gudang.purchase.add(x);
+  void addPurchase(List dataorder, BuildContext context) {
+
+    if (dataorder[2].length==0) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Alert'),
+            content: Text("Please add order before save"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    else if (dataorder[1].trim()=="") {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Alert'),
+            content: Text(dataorder[4]=="Sales" ? "Please input Customer Name before save" : "Please input Supplier Name before save"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+    else{
+      String typee = dataorder[4];
+      String numb = typee == "Sales" ? (Gudang.salescode+1).toString().padLeft(6,"0") : (Gudang.purchasecode+1).toString().padLeft(6,"0");
+      typee == "Sales" ? Gudang.salescode+=1 : Gudang.purchasecode+=1;
+      String code = typee == "Sales" ? "S" : "P";
+      String user = Gudang.usinguser;
+      List alldata = ["${code+numb}",dataorder[0],dataorder[1],user,dataorder[2],dataorder[3]];
+      typee == "Sales" 
+      ? Gudang.sales.add(alldata)
+      : Gudang.purchase.add(alldata);
+      List data = Gudang.product;
+      for (int i = 0 ; i<dataorder[2].length ; i++) {
+        for (int j = 0 ; j<data.length ; j++) {
+          if (data[j].contains(dataorder[2][i][1])) {
+            typee == "Sales" 
+            ? data[j][3] = data[j][3]-dataorder[2][i][3] 
+            : data[j][3] = data[j][3]+dataorder[2][i][3];
+          }
+        }
+      }
+      Navigator.of(context).pop(true);
+    }
     notifyListeners();
   }
 
@@ -155,6 +245,7 @@ void updatePassword(String username, String oldPassword, String newPassword) {
 }
 
 List<dynamic> listfitur = [[
+  
     Icons.attach_money,
     Icons.sell,
     Icons.warehouse,
@@ -162,3 +253,11 @@ List<dynamic> listfitur = [[
   ],[
     "Purchasing","Sales","Stock","About"
   ]];
+
+List<dynamic> newList(List<dynamic> inputList) {
+    List hasil = [];
+    inputList.forEach((subList) {
+      hasil.add(subList[1]);
+    });
+    return hasil;
+  }

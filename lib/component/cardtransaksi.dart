@@ -6,7 +6,8 @@ import 'package:program/TransactionDetail.dart';
 
 class CardTrans extends StatefulWidget {
   final List x;
-  const CardTrans({super.key, required this.x});
+  final String type;
+  const CardTrans({super.key, required this.x, required this.type});
 
   @override
   State<CardTrans> createState() => _CardTransState();
@@ -18,7 +19,7 @@ class _CardTransState extends State<CardTrans> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => PurchaseDetail(dataTransaksi: widget.x,),)
+          MaterialPageRoute(builder: (context) => PurchaseDetail(dataTransaksi: widget.x, type: widget.type),)
         );
       },
       child: Container(

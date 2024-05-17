@@ -407,61 +407,8 @@ class _AddTransactionState extends State<AddTransaction> {
                       ElevatedButton.icon(
                         onPressed: () {
                           setState(() {
-                            if (ordered.length==0) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Alert'),
-                                    content: Text("Please add order before save"),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                            else if (name.text.trim()=="") {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Alert'),
-                                    content: Text(jenis=="Sales" ? "Please input Customer Name before save" : "Please input Supplier Name before save"),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                            else{
-                              String numb = jenis == "Sales" ? (Provider.of<ProviderGudang>(context,listen: false).Gudang.salescode+1).toString().padLeft(6,"0") : (Provider.of<ProviderGudang>(context,listen: false).Gudang.purchasecode+1).toString().padLeft(6,"0");
-                              jenis == "Sales" ? Provider.of<ProviderGudang>(context,listen: false).Gudang.salescode+=1 : Provider.of<ProviderGudang>(context,listen: false).Gudang.purchasecode+=1;
-                              String code = jenis == "Sales" ? "S" : "P";
-                              String user = Provider.of<ProviderGudang>(context,listen: false).Gudang.usinguser;
-                              List alldata = ["${code+numb}",DateFormat("dd-MM-yyyy").format(date),name.text,user,ordered,total];
-                              jenis == "Sales" ? Provider.of<ProviderGudang>(context,listen: false).Gudang.sales.add(alldata) : Provider.of<ProviderGudang>(context,listen: false).Gudang.purchase.add(alldata);
-                              List data = Provider.of<ProviderGudang>(context, listen: false).Gudang.product;
-                              for (int i = 0 ; i<ordered.length ; i++) {
-                                for (int j = 0 ; j<data.length ; j++) {
-                                  if (data[j].contains(ordered[i][1])) {
-                                    jenis == "Sales" ? data[j][3] = data[j][3]-ordered[i][3] : data[j][3] = data[j][3]+ordered[i][3];
-                                  }
-                                }
-                              }
-                              Navigator.of(context).pop(true);
-                            }
+                            List alldata = [DateFormat("dd-MM-yyyy").format(date),name.text,ordered,total,jenis];
+                            Provider.of<ProviderGudang>(context,listen: false).addPurchase(alldata,context);
                           });
                         }, 
                         style: ElevatedButton.styleFrom(

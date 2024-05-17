@@ -20,8 +20,6 @@ class _SalesViewState extends State<SalesView> {
   void initState() {
     super.initState();
     data = Provider.of<ProviderGudang>(context,listen: false).Gudang.sales;
-    filtered = data;
-
   }
 
   @override
@@ -66,8 +64,13 @@ class _SalesViewState extends State<SalesView> {
                   ),
                 ),
               ),
-              ...filtered.reversed.toList().map<Widget>((item) {
-                return CardTrans(x: item);
+              ...
+              search.text == ""
+              ? Provider.of<ProviderGudang>(context).Gudang.sales.reversed.map<Widget>((item) {
+                return CardTrans(x: item, type: "Sales");
+              })
+              : filtered.reversed.map<Widget>((item) {
+                return CardTrans(x: item, type: "Sales");
               }),
             ]
           ),
@@ -80,6 +83,7 @@ class _SalesViewState extends State<SalesView> {
           );
         },
         style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
           backgroundColor: Colors.blue,
           foregroundColor: Colors.white,
           elevation: 7,

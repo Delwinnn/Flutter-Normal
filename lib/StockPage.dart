@@ -22,8 +22,6 @@ class _StockViewState extends State<StockView> {
   void initState() {
     super.initState();
     datastock = Provider.of<ProviderGudang>(context,listen: false).Gudang.product;
-    filtered = datastock;
-
   }
 
   @override
@@ -68,7 +66,12 @@ class _StockViewState extends State<StockView> {
                   ),
                 ),
               ),
-              ...filtered.map<Widget>((item) {
+              ...
+              search.text == ""
+              ? Provider.of<ProviderGudang>(context).Gudang.product.map<Widget>((item) {
+                return CardStock(produk: item);
+              })
+              : filtered.map<Widget>((item) {
                 return CardStock(produk: item);
               }),
             ]
@@ -84,6 +87,7 @@ class _StockViewState extends State<StockView> {
           });
         },
         style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
           backgroundColor: Colors.blue,
           foregroundColor: Colors.white,
           elevation: 7,

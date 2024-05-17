@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:program/aboutpage.dart';
 import 'package:program/accountView.dart';
 import 'package:program/component/data.dart';
-import 'package:program/loginpage.dart';
 import 'package:program/purchasingpage.dart';
 import 'package:program/salespage.dart';
 import 'package:program/stockpage.dart';
