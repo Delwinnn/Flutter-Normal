@@ -30,7 +30,7 @@ class _AccountViewState extends State<AccountView> {
       body:Container(
         height: MediaQuery.of(context).size.height,
         color: Colors.grey[400],
-        padding: EdgeInsets.only(left: 15,right: 15,top: 7,bottom: 7),
+        padding: EdgeInsets.only(left: 10,right: 10,top: 7,bottom: 7),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -69,7 +69,7 @@ class _CardAccountState extends State<CardAccount> {
         color: Colors.white,
       ),
       margin: EdgeInsetsDirectional.symmetric(vertical: 7),
-      padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -112,7 +112,7 @@ class _CardAccountState extends State<CardAccount> {
                   color: Colors.grey
                 ),
               ),
-              SizedBox(width: 15,),
+              SizedBox(width: 10,),
               Column(
                 children: [
                   Text("Password"),
