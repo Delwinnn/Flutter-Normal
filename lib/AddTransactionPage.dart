@@ -408,7 +408,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         onPressed: () {
                           setState(() {
                             List alldata = [DateFormat("dd-MM-yyyy").format(date),name.text,ordered,total,jenis];
-                            Provider.of<ProviderGudang>(context,listen: false).addPurchase(alldata,context);
+                            Provider.of<ProviderGudang>(context,listen: false).addTransaction(alldata,context);
                           });
                         }, 
                         style: ElevatedButton.styleFrom(
